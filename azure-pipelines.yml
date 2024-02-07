@@ -1,0 +1,43 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'
+  displayName: 'Use Python 3.11'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install twine keyring artifacts-keyring
+    pip install wheel
+  displayName: 'Install dependencies'
+
+- script: |
+    pip install pytest pytest-azurepipelines
+    pytest tests/unit
+  displayName: 'pytest'
+
+- script: |    
+    python setup.py sdist bdist_wheel
+  displayName: 'Artifact creation'
+
+- script: python -m pip install --upgrade twine
+  displayName: 'Install Twine'
+
+- task: TwineAuthenticate@1
+  inputs:
+    artifactFeed: 'test-feed-azure-test'
+
+- script: |
+   python -m twine upload -r "test-feed-azure-test" --verbose --skip-existing --config-file $(PYPIRC_PATH) dist/*.whl
+  displayName: 'Publish to PyPi through Twine'
