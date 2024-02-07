@@ -1,7 +1,18 @@
 # tests/unit/test_unit_calculator.py
 
 import pytest
+
+import sys
+
+for p in sys.path : print(p)
+
+for m in sys.modules: 
+    if m == 'lzma':  print('-----------------', m)
+
 from src.example.calculator import Calculator
+
+
+
 
 @pytest.fixture
 def calculator():

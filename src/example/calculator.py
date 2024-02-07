@@ -1,13 +1,8 @@
-def print_hello():
-    print('Hello')
+# src/example/calculator.py
 
+class Calculator:
+    def add(self, a, b):
+        return a + b
 
-class MyClass:
-    def __init__(self, word):
-        self.word =  word
-
-    def pring(self):
-        print(self.word)
-
-if __name__ == "__main__": 
-    print_hello()
+    def subtract(self, a, b):
+        return a - b
