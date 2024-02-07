@@ -39,5 +39,5 @@ steps:
     artifactFeed: 'test-feed-azure-test'
 
 - script: |
-   python -m twine upload -r --verbose --skip-existing --config-file $(PYPIRC_PATH) dist/*.whl
+   python -m twine upload -r "test-feed-azure-test" --verbose --skip-existing --config-file $(PYPIRC_PATH) dist/*.whl
   displayName: 'Publish to PyPi through Twine'
